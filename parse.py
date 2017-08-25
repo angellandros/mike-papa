@@ -18,7 +18,7 @@ def parse(var):
     if len(value) == 2:
         o, a = value[0], value[1]  # not
         aa = parse(a)
-	context[var] = ~ aa
+        context[var] = ~ aa
         return ~ aa
     a, o, b = value[0], value[1], value[2]
     aa = parse(a)
