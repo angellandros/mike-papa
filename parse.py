@@ -7,26 +7,35 @@ context = {}
 def parse(var):
     if var.isdigit():  # literal
         return int(var)
-    value = context[var].split(' ')
+    value = context[var]
+    if isinstance(value, (int, long)):
+        return value
+    value = value.split(' ')
     if len(value) == 1:  # assignment
+        parsed = parse(value[0])
+        context[var] = parsed
         return parse(value[0])
     if len(value) == 2:
         o, a = value[0], value[1]  # not
-        return ~ parse(a)
+        aa = parse(a)
+	context[var] = ~ aa
+        return ~ aa
     a, o, b = value[0], value[1], value[2]
     aa = parse(a)
     bb = parse(b)
+    answer = 0
     if o == 'AND':
-        return aa & bb
+        answer = aa & bb
     if o == 'OR':
-        return aa | bb
+        answer = aa | bb
     if o == 'XOR':
-        return aa ^ bb
+        answer = aa ^ bb
     if o == 'LSHIFT':
-        return aa << bb
+        answer = aa << bb
     if o == 'RSHIFT':
-        return aa >> bb
-    return 0
+        answer = aa >> bb
+    context[var] = answer
+    return answer
 
 
 def load(path):
